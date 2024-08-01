@@ -5,10 +5,18 @@ const resultTextArea = document.querySelector('#result');
 const instructions = document.querySelector('#instructions');
 
 let recognition;
+let interval = null;
 
 const STORAGE_KEY = 'voice-to-text';
 const saveText = text => localStorage.setItem(STORAGE_KEY, text);
 const getText = e => localStorage.getItem(STORAGE_KEY);
+
+const updateClearBtnState = e => {
+    if (resultTextArea.value != '') {
+        clearBtn.disabled = false;
+        clearInterval(interval);
+    }
+}
 
 if (!('webkitSpeechRecognition' in window)) {
     instructions.textContent = 'Web Speech API is not supported by this browser. Please use Chrome or another supported browser.';
@@ -51,6 +59,7 @@ if (!('webkitSpeechRecognition' in window)) {
 
 window.addEventListener('DOMContentLoaded', e => {
     resultTextArea.value = getText();
+    interval = setInterval(updateClearBtnState, 1000);
 });
 
 startBtn.addEventListener('click', e => {
@@ -67,14 +76,7 @@ clearBtn.addEventListener('click', e => {
     saveText('');
     resultTextArea.readonly = true;
     clearBtn.disabled = true;
-});
-
-resultTextArea.addEventListener('click', e => {
-    if (resultTextArea.value != '') {
-        clearBtn.disabled = false;
-    } else {
-        clearBtn.disabled = true;
-    }
+    interval = setInterval(updateClearBtnState, 1000);
 });
 
 resultTextArea.addEventListener('click', e => {
