@@ -1,7 +1,7 @@
-const startBtn = document.querySelector('#start-btn');
+const result = document.querySelector('#result');
 const stopBtn = document.querySelector('#stop-btn');
+const startBtn = document.querySelector('#start-btn');
 const clearBtn = document.querySelector('#clear-btn');
-const resultTextArea = document.querySelector('#result');
 const instructions = document.querySelector('#instructions');
 
 let recognition;
@@ -11,8 +11,8 @@ const STORAGE_KEY = 'voice-to-text';
 const saveText = text => localStorage.setItem(STORAGE_KEY, text);
 const getText = e => localStorage.getItem(STORAGE_KEY);
 
-const updateClearBtnState = e => {
-    if (resultTextArea.value != '') {
+const updateClearBtn = e => {
+    if (result.value != '') {
         clearBtn.disabled = false;
         clearInterval(interval);
     }
@@ -26,7 +26,7 @@ if (!('webkitSpeechRecognition' in window)) {
     recognition.interimResults = true;
 
     recognition.onstart = e => {
-        resultTextArea.value = getText();
+        result.value = getText();
         instructions.textContent = 'Voice recognition started. Speak into the microphone.';
         startBtn.disabled = true;
         stopBtn.disabled = false;
@@ -37,20 +37,20 @@ if (!('webkitSpeechRecognition' in window)) {
         let finalTranscript = getText();
         for (let i = e.resultIndex; i < e.results.length; ++i) {
             if (e.results[i].isFinal) {
-                finalTranscript += e.results[i][0].transcript + '. ';
+                finalTranscript += e.results[i][0].transcript;
             } else {
                 interimTranscript += e.results[i][0].transcript;
             }
         }
-        resultTextArea.value = finalTranscript + interimTranscript;
+        result.value = `${finalTranscript} . ${interimTranscript}`;
     };
 
     recognition.onerror = e => {
-        instructions.textContent = 'Error occurred in recognition: ' + e.error;
+        instructions.textContent = `Error occurred in recognition: ${e.error}`;
     };
 
     recognition.onend = e => {
-        saveText(resultTextArea.value);
+        saveText(result.value);
         instructions.textContent = 'Voice recognition stopped.';
         startBtn.disabled = false;
         stopBtn.disabled = true;
@@ -58,8 +58,8 @@ if (!('webkitSpeechRecognition' in window)) {
 }
 
 window.addEventListener('DOMContentLoaded', e => {
-    resultTextArea.value = getText();
-    interval = setInterval(updateClearBtnState, 1000);
+    result.value = getText();
+    interval = setInterval(updateClearBtn, 1000);
 });
 
 startBtn.addEventListener('click', e => {
@@ -71,17 +71,17 @@ stopBtn.addEventListener('click', e => {
 });
 
 clearBtn.addEventListener('click', e => {
-    resultTextArea.readonly = false;
-    resultTextArea.value = '';
+    result.readonly = false;
+    result.value = '';
     saveText('');
-    resultTextArea.readonly = true;
+    result.readonly = true;
     clearBtn.disabled = true;
-    interval = setInterval(updateClearBtnState, 1000);
+    interval = setInterval(updateClearBtn, 1000);
 });
 
-resultTextArea.addEventListener('click', e => {
-    if (resultTextArea.value != '') {
-        resultTextArea.select();
+result.addEventListener('click', e => {
+    if (result.value != '') {
+        result.select();
         document.execCommand('copy');
         instructions.textContent = 'Text copied to clipboard.';
     }
