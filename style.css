@@ -1,0 +1,35 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+.container {
+    padding: 20px;
+    background: #eee;
+    text-align: center;
+    width: calc(100vw - 40px);
+    height: calc(100vh - 40px);
+    width: calc(100svw - 40px);
+    height: calc(100svh - 40px);
+}
+#instructions {
+    font-size: 10px;
+    user-select: none;
+}
+button {
+    margin: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    user-select: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+textarea {
+    resize: none;
+    padding: 10px;
+    font-size: 12px;
+    margin-top: 10px;
+    border-radius: 5px;
+    width: calc(100% - 50px);
+    height: calc(100% - 100px);
+}
