@@ -7,7 +7,7 @@ const instructions = document.querySelector('#instructions');
 let recognition;
 let interval = null;
 
-const app = 'voice-to-text';
+const app = 'Voice To Text';
 const VISITS_KEY = 'voice-to-text-visits';
 
 const STORAGE_KEY = 'voice-to-text';
