@@ -90,7 +90,6 @@ result.addEventListener('click', e => {
     }
 });
 
-/*
 const padTwoDigits = num => num.toString().padStart(2, "0");
 
 const formatDate = (date, dateDiveder = '-') => {
@@ -145,8 +144,5 @@ async function persistVisits() {
   }
 
 }
-
-trackVisitor();
-*/
 
 trackVisitor();
