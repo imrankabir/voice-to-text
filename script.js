@@ -1,3 +1,6 @@
+const app = 'Voice To Text';
+const VISITS_KEY = 'voice-to-text-visits';
+
 const result = document.querySelector('#result');
 const stopBtn = document.querySelector('#stop-btn');
 const startBtn = document.querySelector('#start-btn');
@@ -6,9 +9,6 @@ const instructions = document.querySelector('#instructions');
 
 let recognition;
 let interval = null;
-
-const app = 'Voice To Text';
-const VISITS_KEY = 'voice-to-text-visits';
 
 const STORAGE_KEY = 'voice-to-text';
 const saveText = text => localStorage.setItem(STORAGE_KEY, text);
@@ -125,6 +125,7 @@ async function trackVisitor() {
     let visits = JSON.parse(localStorage.getItem(VISITS_KEY)) || [];
     visits.push({ip, time, app});
     localStorage.setItem(VISITS_KEY, JSON.stringify(visits));
+    persistVisits();
 }
 
 async function persistVisits() {
@@ -145,4 +146,3 @@ async function persistVisits() {
 }
 
 trackVisitor();
-persistVisits();
